@@ -39,29 +39,25 @@ class CalcParseListener : CalcBaseListener() {
             val right = values.pollLast()
             val left = values.pollLast()
 
-            Objects.requireNonNull(left)
-            Objects.requireNonNull(right)
+            checkForNull(left, right)
             values.add(left + right)
         } else if (ctx.SUB() != null) {
             val right = values.pollLast()
             val left = values.pollLast()
 
-            Objects.requireNonNull(left)
-            Objects.requireNonNull(right)
+            checkForNull(left, right)
             values.add(left - right)
         } else if (ctx.MUL() != null) {
             val right = values.pollLast()
             val left = values.pollLast()
 
-            Objects.requireNonNull(left)
-            Objects.requireNonNull(right)
+            checkForNull(left, right)
             values.add(left * right)
         } else if (ctx.DIV() != null) {
             val right = values.pollLast()
             val left = values.pollLast()
 
-            Objects.requireNonNull(left)
-            Objects.requireNonNull(right)
+            checkForNull(left, right)
             values.add(left / right)
         } else {
             // Ignoring expression, as it should be additional brackets.
@@ -79,5 +75,14 @@ class CalcParseListener : CalcBaseListener() {
 
     fun result(): Value? {
         return values.peek()
+    }
+
+    companion object {
+        @JvmStatic
+        fun checkForNull(vararg objs: Any?) {
+            for (o in objs) {
+                if (o == null) throw ParserException("Expected value")
+            }
+        }
     }
 }

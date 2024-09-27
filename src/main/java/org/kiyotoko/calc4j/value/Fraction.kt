@@ -15,6 +15,10 @@ data class Fraction(private val numerator: Integer, private val denominator: Int
         return Real(value() + that.value())
     }
 
+    override fun plus(that: Variable): Value {
+        return Variable { this + that.signature.signature() }
+    }
+
     override fun plus(that: Integer): Value {
         return Fraction(numerator + denominator * that, denominator).shortened()
     }
@@ -25,6 +29,10 @@ data class Fraction(private val numerator: Integer, private val denominator: Int
 
     override fun minus(that: Real): Real {
         return Real(value() - that.value())
+    }
+
+    override fun minus(that: Variable): Value {
+        return Variable { this - that.signature.signature() }
     }
 
     override fun minus(that: Integer): Value {
@@ -44,6 +52,10 @@ data class Fraction(private val numerator: Integer, private val denominator: Int
         return Real(value() * that.value())
     }
 
+    override fun times(that: Variable): Value {
+        return Variable { this * that.signature.signature() }
+    }
+
     override fun times(that: Integer): Value {
         return Fraction(numerator * that, denominator).shortened()
     }
@@ -54,6 +66,10 @@ data class Fraction(private val numerator: Integer, private val denominator: Int
 
     override fun div(that: Real): Real {
         return Real(value().divide(that.value(), MathContext.DECIMAL128))
+    }
+
+    override fun div(that: Variable): Value {
+        return Variable { this / that.signature.signature() }
     }
 
     override fun div(that: Integer): Value {

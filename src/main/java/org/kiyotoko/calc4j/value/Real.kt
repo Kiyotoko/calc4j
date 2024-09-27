@@ -20,6 +20,10 @@ data class Real(private val value: BigDecimal): Value {
         return Real(value + that.value)
     }
 
+    override fun plus(that: Variable): Value {
+        return Variable { this + that.signature.signature() }
+    }
+
     override fun minus(that: Integer): Real {
         return Real(value - BigDecimal(that.value()))
     }
@@ -30,6 +34,10 @@ data class Real(private val value: BigDecimal): Value {
 
     override fun minus(that: Real): Real {
         return Real(value - that.value)
+    }
+
+    override fun minus(that: Variable): Value {
+        return Variable { this - that.signature.signature() }
     }
 
     override fun times(that: Integer): Real {
@@ -44,6 +52,10 @@ data class Real(private val value: BigDecimal): Value {
         return Real(value * that.value)
     }
 
+    override fun times(that: Variable): Value {
+        return Variable { this * that.signature.signature() }
+    }
+
     override fun div(that: Integer): Real {
         return Real(value.divide(BigDecimal(that.value()), MathContext.DECIMAL128))
     }
@@ -54,6 +66,10 @@ data class Real(private val value: BigDecimal): Value {
 
     override fun div(that: Real): Real {
         return Real(value.divide(that.value, MathContext.DECIMAL128))
+    }
+
+    override fun div(that: Variable): Value {
+        return Variable { this / that.signature.signature() }
     }
 
     override fun equals(other: Any?): Boolean {

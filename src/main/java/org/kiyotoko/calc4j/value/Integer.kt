@@ -22,6 +22,10 @@ data class Integer(private val value: BigInteger): Value {
         return Real(BigDecimal(value) + that.value())
     }
 
+    override fun plus(that: Variable): Value {
+        return Variable { this + that.signature.signature() }
+    }
+
     override fun minus(that: Integer): Integer {
         return Integer(this.value - that.value)
     }
@@ -32,6 +36,10 @@ data class Integer(private val value: BigInteger): Value {
 
     override fun minus(that: Real): Value {
         return Real(BigDecimal(value) - that.value())
+    }
+
+    override fun minus(that: Variable): Value {
+        return Variable { this - that.signature.signature() }
     }
 
     override fun times(that: Integer): Integer {
@@ -46,6 +54,10 @@ data class Integer(private val value: BigInteger): Value {
         return Real(BigDecimal(value) * that.value())
     }
 
+    override fun times(that: Variable): Value {
+        return Variable { this * that.signature.signature() }
+    }
+
     override fun div(that: Integer): Value {
         return Fraction(this, that).shortened()
     }
@@ -56,6 +68,10 @@ data class Integer(private val value: BigInteger): Value {
 
     override fun div(that: Real): Value {
         return Real(BigDecimal(value).divide(that.value(), MathContext.DECIMAL128))
+    }
+
+    override fun div(that: Variable): Value {
+        return Variable { this / that.signature.signature() }
     }
 
     operator fun compareTo(that: Integer): Int {

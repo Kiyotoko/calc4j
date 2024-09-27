@@ -5,7 +5,7 @@ import org.kiyotoko.calc4j.math.namespace
 
 data class Variable(val signature: Signature): Value {
     constructor(name: String) : this({
-        val present = namespace[name]?: throw IllegalAccessException()
+        val present = namespace[name]?: throw IllegalAccessException("Variable $name is undefined")
         if (present is Value) {
             present
         } else throw InternalError()
@@ -23,6 +23,10 @@ data class Variable(val signature: Signature): Value {
         return Variable { signature.signature() + that }
     }
 
+    override fun plus(that: Variable): Value {
+        return Variable { signature.signature() + that.signature.signature() }
+    }
+
     override fun minus(that: Integer): Value {
         return Variable { signature.signature() - that }
     }
@@ -33,6 +37,10 @@ data class Variable(val signature: Signature): Value {
 
     override fun minus(that: Real): Value {
         return Variable { signature.signature() - that }
+    }
+
+    override fun minus(that: Variable): Value {
+        return Variable { signature.signature() - that.signature.signature() }
     }
 
     override fun times(that: Integer): Value {
@@ -47,6 +55,10 @@ data class Variable(val signature: Signature): Value {
         return Variable { signature.signature() * that }
     }
 
+    override fun times(that: Variable): Value {
+        return Variable { signature.signature() * that.signature.signature() }
+    }
+
     override fun div(that: Integer): Value {
         return Variable { signature.signature() / that }
     }
@@ -57,6 +69,10 @@ data class Variable(val signature: Signature): Value {
 
     override fun div(that: Real): Value {
         return Variable { signature.signature() / that }
+    }
+
+    override fun div(that: Variable): Value {
+        return Variable { signature.signature() / that.signature.signature() }
     }
 
     override fun value(): Number {
